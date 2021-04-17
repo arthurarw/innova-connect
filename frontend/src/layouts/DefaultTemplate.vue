@@ -1,10 +1,10 @@
 <template>
     <div>
-        <preloader-component></preloader-component>
         <header-component/>
-
         <!-- Page Content -->
         <div class="container container-body">
+            <preloader-component></preloader-component>
+
             <router-view></router-view>
         </div>
 

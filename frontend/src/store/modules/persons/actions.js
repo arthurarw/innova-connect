@@ -14,25 +14,36 @@ const actions = {
             .finally(() => commit('SET_PRELOADER', false));
     },
 
-    getCategoriesByCompany({commit}, tokenCompany) {
+    showPerson({commit}, id) {
         commit('SET_PRELOADER', true);
-        commit('SET_TEXT_PRELOADER', 'Carregando Categorias...');
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
 
-        return axios.get(`/${API_VERSION}/categories?token_company=${tokenCompany}`)
+        return axios.get(`/${API_VERSION}/persons/${id}`)
             .then(response => {
-                commit('SET_CATEGORIES_COMPANY', response.data);
+                commit('SET_PERSONS', response.data.data);
             })
             .finally(() => commit('SET_PRELOADER', false));
     },
 
-    getProductsByCompany({commit}, params) {
+    updatePerson({commit}, params) {
         commit('SET_PRELOADER', true);
-        commit('SET_TEXT_PRELOADER', 'Carregando Produtos...');
-        commit('SET_PRODUCTS_COMPANY', {data: []});
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
 
-        return axios.get(`/${API_VERSION}/products`, {params})
+        let id = params.person_id;
+        return axios.put(`/${API_VERSION}/persons/${id}`, params)
             .then(response => {
-                commit('SET_PRODUCTS_COMPANY', response.data);
+                return response.data.data;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
+
+    storeContacts({commit}, params) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
+
+        return axios.post(`/${API_VERSION}/contact`, params)
+            .then(response => {
+                return response.data.message;
             })
             .finally(() => commit('SET_PRELOADER', false));
     }

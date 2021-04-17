@@ -1,20 +1,17 @@
 <template>
     <div>
-        <default-template/>
         <div class="container mt-5">
-            <grid />
+            <grid/>
         </div>
     </div>
 </template>
 
 <script>
-import DefaultTemplate from "../layouts/DefaultTemplate";
 import Grid from "../components/Grid";
 
 export default {
     name: 'Home',
     components: {
-        DefaultTemplate,
         Grid
     }
 }
