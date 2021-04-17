@@ -12,38 +12,18 @@
                     <tr>
                         <th>Name</th>
                         <th>Address</th>
+                        <th>Created At</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>Administration</td>
+                    <tr v-for="(person, index) in persons" :key="index">
+                        <td>{{person.firstname}} {{person.lastname}}</td>
+                        <td>{{person.address}}</td>
+                        <td>{{person.created_at}}</td>
                         <td>
-                            <a href="#"><i class="fas fa-user-edit"></i></a>
-                            <a href="#"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Peter Parker</td>
-                        <td>Customer Service</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Fran Wilson</td>
-                        <td>Human Resources</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                class="material-icons">&#xE872;</i></a>
+                            <a href="#" class="p-2"><i class="fas fa-user-edit"></i></a>
+                            <a href="#" class="p-2"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -54,8 +34,31 @@
 </template>
 
 <script>
+import {mapActions, mapState, mapMutations} from 'vuex';
+
 export default {
-    name: "Grid"
+    name: "Grid",
+
+    mounted() {
+        this.getPersons().catch(response => {
+            console.log(response);
+        });
+    },
+
+    computed: {
+        ...mapState({
+            persons: state => state.persons.persons
+        })
+    },
+
+    methods: {
+        ...mapActions([
+            "getPersons"
+        ]),
+        ...mapMutations({
+            setPersons: 'SET_PERSONS'
+        }),
+    }
 }
 </script>
 

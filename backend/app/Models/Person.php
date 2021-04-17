@@ -28,4 +28,10 @@ class Person extends Model
     {
         return $this->hasMany(PersonContact::class, 'person_id', 'id');
     }
+
+    public function getFullAddress()
+    {
+        $address = "{$this->ads_street}, {$this->ads_neighborhood}, {$this->ads_number}, {$this->ads_city} - {$this->ads_state} - {$this->ads_zipcode}";
+        return $address;
+    }
 }

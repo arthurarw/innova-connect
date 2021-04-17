@@ -14,6 +14,7 @@ class PersonResource extends JsonResource
             'id' => (int)$this->id,
             'firstname' => (string)$this->firstname,
             'lastname' => (string)$this->lastname,
+            'address' => $this->getFullAddress(),
             'contacts' => $this->contacts,
             'created_at' => date('d/m/Y H:i:s', strtotime($this->created_at))
         ];
