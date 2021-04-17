@@ -69,9 +69,8 @@
                     </div>
 
                     <div class="float-end mt-2">
-                        <button @click.prevent="updateUser" type="button" class="btn btn-primary"><i
-                            class="far fa-save"></i>
-                            Save
+                        <button @click.prevent="updateUser" type="button" class="btn btn-primary">
+                            <i class="far fa-save"></i> Save
                         </button>
                     </div>
                 </div>
@@ -128,7 +127,6 @@
             </button>
         </div>
 
-
         <modal-contact v-if="showModalContact" @close="closeModalContact"/>
 
     </div>
@@ -160,7 +158,7 @@ export default {
                 color: '',
                 message: ''
             },
-            showModalContact: false
+            showModalContact: false,
         }
     },
 
