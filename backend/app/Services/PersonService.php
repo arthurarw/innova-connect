@@ -29,4 +29,15 @@ class PersonService
         //
     }
 
+    /**
+     * @throws \Throwable
+     */
+    public function update(array $data, Person $person): ?Person
+    {
+        $person->fill($data);
+        $person->saveOrFail();
+
+        return $person->fresh();
+    }
+
 }

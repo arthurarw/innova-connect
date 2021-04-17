@@ -2,13 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Lumen\Auth\Authorizable;
 
 /**
  * Class PersonContact
@@ -16,7 +12,7 @@ use Laravel\Lumen\Auth\Authorizable;
  */
 class PersonContact extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +20,9 @@ class PersonContact extends Model
      * @var array
      */
     protected $fillable = [
-        'person_id', 'contact_type', 'contact'
+        'contact',
+        'person_id',
+        'contact_type'
     ];
 
     /**
@@ -36,11 +34,16 @@ class PersonContact extends Model
         'person_id',
     ];
 
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
+
     /**
      * @param $value
      * @return string
      */
-    public function getContactTypeAttribute($value): string
+    public function getContactTypeAttribute($value)
     {
         switch ($value) {
             case 1:
@@ -49,6 +52,15 @@ class PersonContact extends Model
                 return 'Telefone';
             case 3:
                 return 'E-mail';
+        }
+    }
+
+    public function setContactAttribute($value)
+    {
+        if ($this->contact_type != 'E-mail') {
+            $this->attributes['contact'] = StringHelper::clearField($value);
+        } else {
+            $this->attributes['contact'] = $value;
         }
     }
 }

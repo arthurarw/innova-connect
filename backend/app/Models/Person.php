@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Person
+ * @package App\Models
+ */
 class Person extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @var string
+     */
     protected $table = 'persons';
 
     /**
@@ -29,9 +37,19 @@ class Person extends Model
         return $this->hasMany(PersonContact::class, 'person_id', 'id');
     }
 
+    /**
+     * @return string
+     */
     public function getFullAddress()
     {
         $address = "{$this->ads_street}, {$this->ads_neighborhood}, {$this->ads_number}, {$this->ads_city} - {$this->ads_state} - {$this->ads_zipcode}";
         return $address;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setAdsZipcodeAttribute($value) {
+        $this->attributes['ads_zipcode'] = StringHelper::clearField($value);
     }
 }
