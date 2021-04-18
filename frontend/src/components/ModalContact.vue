@@ -2,7 +2,8 @@
     <div class="modal-backdrop">
         <div class="modal">
             <header class="modal-header">
-                <h4>Add Contact</h4>
+                <h4 v-if="id === 0">Add Contact</h4>
+                <h4 v-else>Edit Contact</h4>
                 <button
                     type="button"
                     class="btn-close"
@@ -43,7 +44,7 @@
                 <button
                     type="button"
                     class="btn btn-success"
-                    @click.prevent="saveContact"
+                    @click.prevent="handleContact"
                 >
                     Save
                 </button>
@@ -71,39 +72,89 @@ export default {
         }
     },
 
+    props: {
+        id: Number
+    },
+
     computed: {
         isEmail() {
             return this.contactType === '3' ? null : '(##) #####-####';
         }
     },
 
+    created() {
+        if (this.id === 0) {
+            this.unsetContact();
+        } else {
+            this.fetchContact(this.id);
+        }
+    },
+
     methods: {
         ...mapActions([
             "storeContacts",
-            "destroyContact"
+            "showContact",
+            "updateContact"
         ]),
 
         close() {
+            this.unsetContact();
             this.$emit('close');
         },
 
-        async saveContact() {
-            const payload = {
-                contact_type: this.contactType,
-                contact: this.contact,
-                person_id: this.personId
-            }
-
-            await this.storeContacts(payload).then(response => {
-                this.$vToastify.success('Contato cadastrado com sucesso.', 'Parabéns!');
-
-                this.close();
+        async fetchContact(id) {
+            await this.showContact(id).then(response => {
+                this.payloadContact(response);
             }).catch(e => {
                 const errorCode = e?.response?.data?.error || 'ServerError';
                 this.response.message = messages[errorCode];
 
                 this.close();
             });
+        },
+
+        async handleContact() {
+            const payload = {
+                contact_type: this.contactType,
+                contact: this.contact,
+                person_id: this.personId
+            }
+
+            if (this.id === 0) {
+                await this.storeContacts(payload).then(response => {
+                    this.$vToastify.success('Contato cadastrado com sucesso.', 'Parabéns!');
+
+                    this.close();
+                }).catch(e => {
+                    const errorCode = e?.response?.data?.error || 'ServerError';
+                    this.response.message = messages[errorCode];
+
+                    this.close();
+                });
+            } else {
+                payload.id = this.id;
+
+                await this.updateContact(payload).then(response => {
+                    this.$vToastify.success('Contato atualizado com sucesso.', 'Parabéns!');
+
+                    this.close();
+                }).catch(e => {
+                    const errorCode = e?.response?.data?.error || 'ServerError';
+                    this.response.message = messages[errorCode];
+
+                    this.close();
+                });
+            }
+        },
+
+        payloadContact(response) {
+            this.contact = response.contact;
+            this.contactType = response.contact_type;
+        },
+
+        unsetContact() {
+            this.contact = '';
+            this.contactType = '';
         }
     },
 };

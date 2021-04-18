@@ -25,6 +25,17 @@ const actions = {
             .finally(() => commit('SET_PRELOADER', false));
     },
 
+    showContact({commit}, id) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Contact...');
+
+        return axios.get(`/${API_VERSION}/contact/${id}`)
+            .then(response => {
+                return response.data.data;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
+
     storePerson({commit}, params) {
         commit('SET_PRELOADER', true);
         commit('SET_TEXT_PRELOADER', 'Loading Person...');
@@ -53,6 +64,18 @@ const actions = {
 
         let id = params.person_id;
         return axios.put(`/${API_VERSION}/persons/${id}`, params)
+            .then(response => {
+                return response.data.data;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
+
+    updateContact({commit}, params) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
+
+        let id = params.id;
+        return axios.put(`/${API_VERSION}/contact/${id}`, params)
             .then(response => {
                 return response.data.data;
             })
