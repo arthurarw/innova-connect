@@ -155,6 +155,7 @@ export default {
         unsetContact() {
             this.contact = '';
             this.contactType = '';
+            this.$forceUpdate();
         }
     },
 };
