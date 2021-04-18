@@ -79,7 +79,8 @@ export default {
 
     methods: {
         ...mapActions([
-            "storeContacts"
+            "storeContacts",
+            "destroyContact"
         ]),
 
         close() {

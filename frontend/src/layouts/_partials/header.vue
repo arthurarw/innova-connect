@@ -7,9 +7,27 @@
                     Innova Connect
                 </RouterLink>
                 <div class="d-flex">
-                    <button type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i> Add Person</button>
+                    <button @click.prevent="createPerson" type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i> Add Person</button>
                 </div>
             </div>
         </nav>
     </div>
 </template>
+
+<script>
+import {mapActions, mapState, mapMutations} from 'vuex';
+
+export default {
+
+    methods: {
+        ...mapMutations({
+            setPersons: 'SET_PERSONS'
+        }),
+
+        createPerson() {
+            this.setPersons(Object.assign({}));
+            this.$router.push({name: 'person-create'});
+        }
+    }
+}
+</script>

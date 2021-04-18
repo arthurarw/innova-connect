@@ -25,12 +25,11 @@ const actions = {
             .finally(() => commit('SET_PRELOADER', false));
     },
 
-    updatePerson({commit}, params) {
+    storePerson({commit}, params) {
         commit('SET_PRELOADER', true);
         commit('SET_TEXT_PRELOADER', 'Loading Person...');
 
-        let id = params.person_id;
-        return axios.put(`/${API_VERSION}/persons/${id}`, params)
+        return axios.post(`/${API_VERSION}/persons`, params)
             .then(response => {
                 return response.data.data;
             })
@@ -46,7 +45,41 @@ const actions = {
                 return response.data.message;
             })
             .finally(() => commit('SET_PRELOADER', false));
-    }
+    },
+
+    updatePerson({commit}, params) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
+
+        let id = params.person_id;
+        return axios.put(`/${API_VERSION}/persons/${id}`, params)
+            .then(response => {
+                return response.data.data;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
+
+    destroyPerson({commit}, id) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
+
+        return axios.delete(`/${API_VERSION}/persons/${id}`)
+            .then(response => {
+                return response.message;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
+
+    destroyContact({commit}, id) {
+        commit('SET_PRELOADER', true);
+        commit('SET_TEXT_PRELOADER', 'Loading Person...');
+
+        return axios.delete(`/${API_VERSION}/contact/${id}`)
+            .then(response => {
+                return response.message;
+            })
+            .finally(() => commit('SET_PRELOADER', false));
+    },
 };
 
 export default actions;
