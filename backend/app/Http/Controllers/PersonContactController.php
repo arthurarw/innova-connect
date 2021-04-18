@@ -7,6 +7,7 @@ use App\Http\Resources\PersonContactResource;
 use App\Models\PersonContact;
 use App\Services\PersonContactService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class PersonContactController
@@ -30,6 +31,14 @@ class PersonContactController extends Controller
     }
 
     /**
+     * @throws PersonContactNotFoundException
+     */
+    public function show($id)
+    {
+        return new PersonContactResource($this->contactPersonService->show($id));
+    }
+
+    /**
      * @param Request $request
      * @return PersonContactResource
      * @throws \Illuminate\Validation\ValidationException
@@ -43,6 +52,25 @@ class PersonContactController extends Controller
         ]);
 
         return new PersonContactResource($this->contactPersonService->create($request->all()));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'contact_type' => 'required',
+            'contact' => 'required|string',
+            'person_id' => 'required'
+        ]);
+
+        $contact = PersonContact::where([
+            ['id', $id],
+            ['person_id', $request->input('person_id')]
+        ])->first();
+        if (!$contact) {
+            throw new PersonContactNotFoundException();
+        }
+
+        return new PersonContactResource($this->contactPersonService->update($request->all(), $contact));
     }
 
     public function destroy($id)

@@ -22,4 +22,13 @@ class StringHelper
 
         return str_replace(['.', '-', '/', '(', ')', ' '], '', $param);
     }
+
+    public static function formatPhoneNumber($phoneNumber)
+    {
+        $new = substr_replace($phoneNumber, '(', 0, 0);
+        if (strlen($phoneNumber) == 10) {
+            $new = substr_replace($new, '9', 3, 0);
+        }
+        return substr_replace($new, ')', 3, 0);
+    }
 }

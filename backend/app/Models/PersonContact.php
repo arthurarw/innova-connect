@@ -40,28 +40,22 @@ class PersonContact extends Model
         return $this->belongsTo(Person::class);
     }
 
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getContactTypeAttribute($value)
-    {
-        switch ($value) {
-            case 1:
-                return 'WhatsApp';
-            case 2:
-                return 'Telefone';
-            case 3:
-                return 'E-mail';
-        }
-    }
 
     public function setContactAttribute($value)
     {
-        if ($this->contact_type != 'E-mail') {
+        if ($this->contact_type != 3) {
             $this->attributes['contact'] = StringHelper::clearField($value);
         } else {
             $this->attributes['contact'] = $value;
         }
+    }
+
+    public function getContactAttribute($value)
+    {
+        if ($this->contact_type != 3) {
+            return StringHelper::formatPhoneNumber($value);
+        }
+
+        return $value;
     }
 }
