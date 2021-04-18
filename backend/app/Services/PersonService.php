@@ -26,7 +26,7 @@ class PersonService
 
     public function create(array $data)
     {
-        //
+        return Person::create($data);
     }
 
     /**

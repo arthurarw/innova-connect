@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 /**
  * Class PersonContact
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class PersonContact extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SoftCascadeTrait;
 
     /**
      * The attributes that are mass assignable.
