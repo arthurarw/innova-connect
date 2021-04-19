@@ -15,65 +15,83 @@
                     <h4 v-if="">
                         {{ persons.firstname }} {{ persons.lastname }} Information
                     </h4>
-                    <div class="row">
-                        <div class="col">
-                            <label for="firstname" class="form-label">First name</label>
-                            <input type="text" id="firstname" class="form-control" v-model="firstname"
-                                   placeholder="First name" aria-label="First name">
-                        </div>
-                        <div class="col">
-                            <label for="lastname" class="form-label">Last name</label>
-                            <input type="text" id="lastname" v-model="lastname" class="form-control"
-                                   placeholder="Last name"
-                                   aria-label="Last name">
-                        </div>
-                    </div>
+                    <ValidationObserver
+                        ref="registerForm"
+                        tag="form"
+                        @submit.stop.prevent="handleUser()"
+                    >
+                        <div class="row">
+                            <ValidationProvider v-slot="{errors}" rules="required" name="First name">
+                                <div class="col">
+                                    <label for="firstname" class="form-label">First name</label>
+                                    <input type="text" id="firstname" class="form-control" v-model="firstname"
+                                           placeholder="First name" aria-label="First name">
+                                </div>
+                                <div v-if="!!errors[0]" class="text-danger">
+                                    {{ errors[0] }}
+                                </div>
+                            </ValidationProvider>
+                            <ValidationProvider v-slot="{errors}" rules="required" name="First name">
+                                <div class="col">
+                                    <label for="lastname" class="form-label">Last name</label>
+                                    <input type="text" id="lastname" v-model="lastname" class="form-control"
+                                           placeholder="Last name"
+                                           aria-label="Last name">
+                                </div>
+                                <div v-if="!!errors[0]" class="text-danger">
+                                    {{ errors[0] }}
+                                </div>
+                            </ValidationProvider>
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <label for="firstname" class="form-label">Zipcode</label>
-                            <input type="text" id="zipcode" class="form-control" v-model="zipcode"
-                                   placeholder="Zipcode" aria-label="Zipcode" v-mask="'#####-###'">
                         </div>
-                        <div class="col">
-                            <label for="lastname" class="form-label">Address Street</label>
-                            <input type="text" id="adsStreet" v-model="adsStreet" class="form-control"
-                                   placeholder="Address Street" aria-label="Address Street">
-                        </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <label for="firstname" class="form-label">Address Number</label>
-                            <input type="text" id="adsNumber" class="form-control" v-model="adsNumber"
-                                   placeholder="Address Number" aria-label="Address Number">
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="firstname" class="form-label">Zipcode</label>
+                                <input type="text" id="zipcode" class="form-control" v-model="zipcode"
+                                       placeholder="Zipcode" aria-label="Zipcode" v-mask="'#####-###'">
+                            </div>
+                            <div class="col">
+                                <label for="lastname" class="form-label">Address Street</label>
+                                <input type="text" id="adsStreet" v-model="adsStreet" class="form-control"
+                                       placeholder="Address Street" aria-label="Address Street">
+                            </div>
                         </div>
-                        <div class="col">
-                            <label for="lastname" class="form-label">Address Neighborhood</label>
-                            <input type="text" id="adsNeighborhood" v-model="adsNeighborhood" class="form-control"
-                                   placeholder="Address Neighborhood" aria-label="Address Neighborhood">
-                        </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <label for="firstname" class="form-label">Address City</label>
-                            <input type="text" id="adsCity" class="form-control" v-model="adsCity"
-                                   placeholder="Address City" aria-label="Address City">
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="firstname" class="form-label">Address Number</label>
+                                <input type="text" id="adsNumber" class="form-control" v-model="adsNumber"
+                                       placeholder="Address Number" aria-label="Address Number">
+                            </div>
+                            <div class="col">
+                                <label for="lastname" class="form-label">Address Neighborhood</label>
+                                <input type="text" id="adsNeighborhood" v-model="adsNeighborhood" class="form-control"
+                                       placeholder="Address Neighborhood" aria-label="Address Neighborhood">
+                            </div>
                         </div>
-                        <div class="col">
-                            <label for="lastname" class="form-label">Address State</label>
-                            <input type="text" id="adsState" v-model="adsState" class="form-control"
-                                   placeholder="Address State" aria-label="Address State">
-                        </div>
-                    </div>
 
-                    <div class="float-end mt-2">
-                        <button @click.prevent="handleUser" type="button" class="btn btn-primary">
-                            <i class="far fa-save"></i> Save
-                        </button>
-                    </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="firstname" class="form-label">Address City</label>
+                                <input type="text" id="adsCity" class="form-control" v-model="adsCity"
+                                       placeholder="Address City" aria-label="Address City">
+                            </div>
+                            <div class="col">
+                                <label for="lastname" class="form-label">Address State</label>
+                                <input type="text" id="adsState" v-model="adsState" class="form-control"
+                                       placeholder="Address State" aria-label="Address State">
+                            </div>
+                        </div>
+
+                        <div class="float-end mt-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="far fa-save"></i> Save
+                            </button>
+                        </div>
+                    </ValidationObserver>
                 </div>
+
 
                 <div class="mt-5" v-if="persons.id">
                     <div class="row mb-2">
@@ -138,13 +156,17 @@
 import {mapActions, mapMutations, mapState} from 'vuex';
 import ModalContact from "../components/ModalContact";
 import messages from '../utils/messages';
+import {ValidationObserver, ValidationProvider} from 'vee-validate';
 
 export default {
     name: "FormPerson",
 
     components: {
-        ModalContact
+        ModalContact,
+        ValidationProvider,
+        ValidationObserver
     },
+
 
     props: {
         person: Object
@@ -166,7 +188,7 @@ export default {
             },
             showModalContact: false,
             editing: false,
-            contactId: 0
+            contactId: 0,
         }
     },
 
@@ -214,6 +236,13 @@ export default {
         },
 
         async handleUser() {
+            const validator = await this.$refs.registerForm.validate();
+            if (!validator) {
+                return;
+            }
+
+            this.resetResponse();
+
             const payload = {
                 firstname: this.firstname,
                 lastname: this.lastname,
@@ -229,7 +258,8 @@ export default {
             if (!payload.person_id) {
                 await this.storePerson(payload).then(response => {
                     this.$vToastify.success('Pessoa cadastrada com sucesso.', 'Parabéns!');
-                    this.$router.push({name: 'person-edit', params: {id: response.id}});
+                    this.$refs.registerForm.reset();
+                    this.unsetUser();
                 }).catch((e) => {
                     const errorCode = e?.response?.data?.error || 'ServerError';
                     this.response.message = messages[errorCode];
@@ -268,6 +298,12 @@ export default {
             this.adsNeighborhood = '';
             this.adsState = '';
             this.adsCity = '';
+            this.$refs.registerForm.reset();
+        },
+
+        resetResponse() {
+            this.response.color = '';
+            this.response.message = '';
         },
 
         openModalContact() {
@@ -276,6 +312,7 @@ export default {
 
         closeModalContact() {
             this.showModalContact = false;
+            this.contactId = 0;
             this.fetchUser();
         },
 

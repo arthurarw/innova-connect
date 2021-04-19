@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\PersonContactNotFoundException;
+use App\Exceptions\PersonNotFoundException;
 use App\Http\Resources\PersonContactResource;
+use App\Models\Person;
 use App\Models\PersonContact;
 use App\Services\PersonContactService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class PersonContactController
@@ -46,10 +47,15 @@ class PersonContactController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'contact_type' => 'required',
+            'contact_type' => 'required|integer',
             'contact' => 'required|string',
-            'person_id' => 'required'
+            'person_id' => 'required|integer'
         ]);
+
+        $person = Person::where('id', $request->input('person_id'))->first();
+        if (!$person) {
+            throw new PersonNotFoundException();
+        }
 
         return new PersonContactResource($this->contactPersonService->create($request->all()));
     }
@@ -57,10 +63,15 @@ class PersonContactController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'contact_type' => 'required',
+            'contact_type' => 'required|integer',
             'contact' => 'required|string',
-            'person_id' => 'required'
+            'person_id' => 'required|integer'
         ]);
+
+        $person = Person::where('id', $request->input('person_id'))->first();
+        if (!$person) {
+            throw new PersonNotFoundException();
+        }
 
         $contact = PersonContact::where([
             ['id', $id],

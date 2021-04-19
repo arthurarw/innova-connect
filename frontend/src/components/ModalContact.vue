@@ -123,26 +123,22 @@ export default {
             if (this.id === 0) {
                 await this.storeContacts(payload).then(response => {
                     this.$vToastify.success('Contato cadastrado com sucesso.', 'Parabéns!');
-
                     this.close();
                 }).catch(e => {
+                    this.$vToastify.error('Verifique os campos novamente.', "Tivemos um problema!");
                     const errorCode = e?.response?.data?.error || 'ServerError';
                     this.response.message = messages[errorCode];
-
-                    this.close();
                 });
             } else {
                 payload.id = this.id;
 
                 await this.updateContact(payload).then(response => {
                     this.$vToastify.success('Contato atualizado com sucesso.', 'Parabéns!');
-
                     this.close();
                 }).catch(e => {
+                    this.$vToastify.error('Verifique os campos novamente.', "Tivemos um problema!");
                     const errorCode = e?.response?.data?.error || 'ServerError';
                     this.response.message = messages[errorCode];
-
-                    this.close();
                 });
             }
         },
@@ -150,14 +146,14 @@ export default {
         payloadContact(response) {
             this.contact = response.contact;
             this.contactType = response.contact_type;
+            this.id = response.id;
         },
 
         unsetContact() {
             this.contact = '';
             this.contactType = '';
-            this.$forceUpdate();
         }
-    },
+    }
 };
 </script>
 
