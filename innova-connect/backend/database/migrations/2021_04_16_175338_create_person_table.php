@@ -21,7 +21,6 @@ class CreatePersonTable extends Migration
             $table->string('ads_street')->nullable();
             $table->string('ads_number')->nullable();
             $table->string('ads_neighborhood')->nullable();
-            $table->string('ads_complement')->nullable();
             $table->string('ads_city')->nullable();
             $table->string('ads_state')->nullable();
             $table->timestamps();

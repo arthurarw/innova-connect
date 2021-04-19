@@ -75,8 +75,7 @@ class PersonController extends Controller
     {
         $this->validate($request, [
             'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'person_id' => 'required'
+            'lastname' => 'required|string'
         ]);
 
         $person = Person::where('id', $id)->first();

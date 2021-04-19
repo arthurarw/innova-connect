@@ -26,21 +26,19 @@ class PersonContact extends Model
         'contact_type'
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'person_id',
-    ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function person()
     {
         return $this->belongsTo(Person::class);
     }
 
 
+    /**
+     * @param $value
+     */
     public function setContactAttribute($value)
     {
         if ($this->contact_type != 3) {
@@ -50,6 +48,10 @@ class PersonContact extends Model
         }
     }
 
+    /**
+     * @param $value
+     * @return array|string|string[]
+     */
     public function getContactAttribute($value)
     {
         if ($this->contact_type != 3) {
