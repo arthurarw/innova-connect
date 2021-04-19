@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      main:
+        aliases:
+          - mysql
+
+  innova_backend:
+    image: webdevops/php-apache:7.3
+    ports:
+      - "8025:80"
+    volumes:
+      - ./:/app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/innova-connect/backend/public
+    links:
+      - "mysql"
+    networks:
+      main:
+        aliases:
+          - innova
+    restart: always
+
+networks:
+  main:
+

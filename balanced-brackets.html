@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balanced Brackets</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function balancedBrackets(brackets) {
+
+        let array = [];
+        for (let i = 0; i < brackets.length; i++) {
+            if (brackets[i] === "(" || brackets[i] === "{" || brackets[i] === "[") {
+                array.push(brackets[i]);
+            } else {
+                if (array.length === 0) {
+                    return false;  
+                } 
+
+                let lastValue = array[array.length - 1];
+                if ((brackets[i] === ']' && lastValue === '[') || (brackets[i] === '}' && lastValue === '{') || (brackets[i] === ')' && lastValue === '(')) {
+                    array.pop();
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return array.length === 0
+    }
+</script>
+
+</html>
