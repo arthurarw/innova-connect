@@ -3,7 +3,7 @@
 ### Tecnologias
 
 - Lumen v8
-- VueJS 2
+- VueJS 2 + Bootstrap v5
 - MySQL
 - Docker
 
