@@ -1,5 +1,3 @@
-# Prova Innova Connect
-
 ### Tecnologias
 
 - Lumen v8
